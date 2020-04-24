@@ -1,0 +1,77 @@
+<aura:component controller="WeatherController">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <!-- Атрибуты для определения геолокации -->
+    <aura:attribute name="latitude" type="Decimal"/>
+    <aura:attribute name="longitude" type="Decimal"/>
+    
+    <!-- Атрибут для поиска по названию города -->
+    <aura:attribute name="nameSityMetada" type="Metadata__c[]"/>
+    <aura:attribute name="nameSity" type="String"/>
+    
+    <!-- Атрибуты для получения объека с API и даты -->
+    <aura:attribute name="currentWeather" type="String"/>
+    <aura:attribute name="dateTime" type="String"/>
+    
+    <!-- Атрибуты для получения URL иконок -->
+    <aura:attribute name="iconURL" type="URL"/>
+
+    <!-- Атрибуты сообщений -->
+    <aura:attribute name="message" type="String"/>
+    
+ 	<!-- WIDGET BODY -->
+    <div class="slds-card slds-container--small">
+		
+        <!-- HEADER -->
+        <div class="header">
+            <div class="name-widget">
+                <h2 title="Weather">Weather widget</h2>
+            </div>
+            <div class="slds-grid slds-gutters slds-container--small panel">
+                <div class="slds-col slds-size_3-of-8 slds-p-horizontal_none">            
+                    <lightning:input  placeholder="Name Sity" value="{!v.nameSity}"/>
+                </div>
+                <div class="slds-col slds-size_2-of-8 slds-p-horizontal_none panel-botton">            
+                    <lightning:button variant="brand" label="Search" title="Brand action" onclick="{!c.searchHandler}"/>
+                </div>
+                <div  class="slds-col slds-size_3-of-8 slds-p-horizontal_none panel-botton">            
+                    <lightning:button variant="base" label="Current location" title="Base action" onclick="{!c.geolocation}"/>
+                </div>
+            </div>
+            
+            <div>
+                <p class="message">{!v.message}</p>
+                <p><b>Name Sity:  {!v.currentWeather.name}</b></p>
+                <p>Date: <lightning:formattedDateTime value="{!v.dateTime}" year="numeric" month="long" day="numeric" weekday="long"/></p>
+            </div>
+		</div>
+		<!-- HEADER -->  
+        
+        <!-- MAIN -->
+        <div class="main">
+        	<div class="slds-grid slds-gutters">
+            	<div class="slds-col slds-size_1-of-2 slds-p-horizontal_none main-left">  
+                    <img src="{!v.iconURL}"></img>
+                    <p>{!v.currentWeather.main.temp} °C</p>
+                    <p>{!v.currentWeather.weather[0].description} </p>
+                </div>
+                <div class="slds-col slds-size_1-of-2 slds-p-horizontal_none main-right">   
+                    <p><ins>Details:</ins></p>
+                    <p>Feels like: {!v.currentWeather.main.feels_like} °C</p>
+                    <p>Wind: {!v.currentWeather.wind.speed} m/s</p>
+                    <p>Humidity: {!v.currentWeather.main.humidity} %</p>
+                    <p>Pressure: {!v.currentWeather.main.pressure} hPa</p>
+                </div>
+            </div>
+        </div>
+		<!-- MAIN -->
+        
+        <!-- FOOTER -->
+        <div class="footer">
+			<p class="info">Data obtained from https://openweathermap.org"</p>
+        </div>
+        <!-- FOOTER -->
+
+    </div>
+    <!-- WIDGET BODY -->
+</aura:component>
